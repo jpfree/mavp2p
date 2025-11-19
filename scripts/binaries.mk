@@ -42,6 +42,7 @@ COPY --from=build-linux-amd64 /s/binaries /s/binaries
 COPY --from=build-linux-armv6 /s/binaries /s/binaries
 COPY --from=build-linux-armv7 /s/binaries /s/binaries
 COPY --from=build-linux-arm64 /s/binaries /s/binaries
+COPY --from=build-linux-mips /s/binaries /s/binaries
 endef
 export DOCKERFILE_BINARIES
 
