@@ -36,6 +36,10 @@ FROM build-base AS build-linux-mips
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=mips GOMIPS=softfloat go build -ldflags "-X main.version=$$VERSION" -o tmp/$(BINARY_NAME)
 RUN tar -C tmp -czf binaries/$(BINARY_NAME)_$${VERSION}_linux_mips.tar.gz --owner=0 --group=0 $(BINARY_NAME)
 
+FROM build-base AS build-linux-mipsle
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=mips GOMIPS=softfloat go build -ldflags "-X main.version=$$VERSION" -o tmp/$(BINARY_NAME)
+RUN tar -C tmp -czf binaries/$(BINARY_NAME)_$${VERSION}_linux_mipsle.tar.gz --owner=0 --group=0 $(BINARY_NAME)
+
 FROM $(BASE_IMAGE)
 COPY --from=build-windows-amd64 /s/binaries /s/binaries
 COPY --from=build-linux-amd64 /s/binaries /s/binaries
@@ -43,6 +47,7 @@ COPY --from=build-linux-armv6 /s/binaries /s/binaries
 COPY --from=build-linux-armv7 /s/binaries /s/binaries
 COPY --from=build-linux-arm64 /s/binaries /s/binaries
 COPY --from=build-linux-mips /s/binaries /s/binaries
+COPY --from=build-linux-mipsle /s/binaries /s/binaries
 endef
 export DOCKERFILE_BINARIES
 
